@@ -107,14 +107,14 @@ else:
 if output_nucleic_acid_type is NucleicAcidType.DNA:
     print(mrna_intermediate.translate({85: 65, 65: 84, 67: 71, 71: 67}))
 elif output_nucleic_acid_type is NucleicAcidType.tRNA:
-    new_codecs: List[str] = [codec[:3] if len(codec) > 3 else codec for codec in mrna_intermediate.split()]
-    for codec in new_codecs:
-        if len(codec) != 3:
-            raise RuntimeError(f"Codec of incorrect length: {codec}")
+    new_codons: List[str] = [codon[:3] if len(codon) > 3 else codon for codon in mrna_intermediate.split()]
+    for codon in new_codons:
+        if len(codon) != 3:
+            raise RuntimeError(f"codon of incorrect length: {codon}")
     proteins: List[Protein] = []
-    for codec in new_codecs:
-        for known_codec, protein in mrna_protein_map.items():
-            if codec.startswith(known_codec):
+    for codon in new_codons:
+        for known_codon, protein in mrna_protein_map.items():
+            if codon.startswith(known_codon):
                 proteins.append(protein)
                 break
     print(" ".join([protein.value for protein in proteins]))
